@@ -1,0 +1,270 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-size: 13px;
+  background: #f0f2f5;
+  color: #1a1a2e;
+}
+
+/* ── Header ── */
+#header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #1a1a2e;
+  color: #fff;
+  padding: 12px 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.35);
+}
+#header h1 { font-size: 18px; font-weight: 700; letter-spacing: .5px; }
+#header .date-range { font-size: 12px; color: #7ecfff; margin-top: 2px; }
+#header .user-info {
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+#header .user-name {
+  font-size: 12px;
+  color: #fff;
+  font-weight: 600;
+}
+#header .logout {
+  color: #9aa5b4;
+  font-size: 12px;
+  text-decoration: none;
+  padding: 5px 10px;
+  border: 1px solid #2d3a55;
+  border-radius: 5px;
+  transition: color .15s, border-color .15s;
+}
+#header .logout:hover { color: #fff; border-color: #7ecfff; }
+
+/* ── Table wrapper ── */
+#table-wrapper {
+  overflow: auto;
+  height: calc(100vh - var(--header-h, 68px));
+  padding: 20px 24px 40px;
+}
+
+/* ── Table outer wrapper ── */
+.table-outer {
+  border-radius: 8px;
+  box-shadow: 0 1px 6px rgba(0,0,0,.12);
+  /* overflow:hidden must NOT appear here or on the table —
+     any overflow value other than visible on an ancestor of a sticky element
+     causes Chrome and Edge to suppress position:sticky entirely */
+}
+
+/* ── Main table ── */
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  background: #fff;
+}
+
+/* ── Column headers ── */
+thead tr.week-headers th {
+  position: sticky;
+  top: 0;
+  z-index: 11;
+  background: #1a1a2e;
+  color: #fff;
+  text-align: center;
+  padding: 9px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .3px;
+  border-right: 1px solid #2d3a55;
+  white-space: nowrap;
+}
+thead tr.week-headers th.week-group {
+  border-right: 2px solid #4a6cf7;
+}
+.week-range {
+  display: block;
+  font-size: 10px;
+  font-weight: 400;
+  color: #7ecfff;
+  margin-top: 3px;
+  letter-spacing: 0;
+}
+thead th.col-resource,
+thead th.col-project {
+  text-align: left;
+  padding-left: 14px;
+}
+
+/* ── Body rows ── */
+tbody tr td { border-bottom: 1px solid #e8ecf2; transition: background .1s; }
+tbody tr:hover td { background: #f5f8ff; }
+
+/* Employee match highlight */
+@keyframes highlight-pulse {
+  0%   { background: #2a3a6b; }
+  60%  { background: #2a3a6b; }
+  100% { background: #eef1f8; }
+}
+tr.employee-row.highlight-match td {
+  animation: highlight-pulse 2s ease-out forwards;
+}
+
+/* Employee name row */
+tr.employee-row td {
+  background: #eef1f8;
+  font-weight: 700;
+  font-size: 13px;
+  color: #1a1a2e;
+  padding: 7px 14px;
+  border-top: 2px solid #c5cde0;
+}
+
+/* Project rows */
+tr.project-row td {
+  padding: 5px 6px;
+  vertical-align: middle;
+}
+tr.project-row td.col-project {
+  padding-left: 24px;
+  color: #3a4a6b;
+  max-width: 340px;
+  word-break: break-word;
+}
+tr.project-row td.col-project .proj-id {
+  font-size: 10px;
+  color: #8a96b0;
+  display: block;
+}
+tr.project-row td.col-project .proj-name {
+  font-size: 12px;
+}
+
+/* Employee total row */
+tr.employee-total-row td {
+  background: #dde3f0;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-top: 1px solid #b8c3db;
+  font-size: 12px;
+  text-align: center;
+}
+tr.employee-total-row td:first-child {
+  text-align: left;
+}
+
+/* Grand total row */
+tr.grand-total-row td {
+  background: #1a1a2e;
+  color: #fff;
+  font-weight: 700;
+  padding: 8px 12px;
+  font-size: 13px;
+  border-top: 3px solid #4a6cf7;
+  text-align: center;
+}
+tr.grand-total-row td:first-child {
+  text-align: left;
+}
+
+/* ── Week cells ── */
+td.cell-week, th.cell-week {
+  text-align: center;
+  white-space: nowrap;
+  min-width: 80px;
+  border-right: 1px solid #e2e7f0;
+}
+td.cell-week.week-group, th.cell-week.week-group {
+  border-right: 2px solid #c5cde0;
+}
+
+.alloc-val {
+  font-size: 13px;
+  font-weight: 500;
+  color: #2d3a6b;
+}
+tr.grand-total-row td .alloc-val {
+  color: #fff;
+}
+.no-alloc {
+  color: #ccc;
+}
+
+/* ── Sticky first two columns ── */
+td.col-resource, th.col-resource,
+td.col-project,  th.col-project {
+  position: sticky;
+  z-index: 2;
+  background: #fff;           /* default (project rows) */
+}
+td.col-resource, th.col-resource { left: 0;      min-width: 140px; max-width: 180px; }
+td.col-project,  th.col-project  { left: 140px;  min-width: 220px; }
+
+/* Sticky cells must mirror their row's background colour exactly */
+thead tr.week-headers th.col-resource,
+thead tr.week-headers th.col-project       { background: #1a1a2e; z-index: 12; }
+tr.employee-row       td.col-resource,
+tr.employee-row       td.col-project       { background: #eef1f8; }
+tr.employee-total-row td.col-resource,
+tr.employee-total-row td.col-project       { background: #dde3f0; }
+tr.grand-total-row    td.col-resource,
+tr.grand-total-row    td.col-project       { background: #1a1a2e; }
+tbody tr:hover        td.col-resource,
+tbody tr:hover        td.col-project       { background: #f5f8ff; }
+
+/* ── Drag-and-drop overlay ── */
+#drop-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: rgba(26, 26, 46, 0.82);
+  backdrop-filter: blur(3px);
+  align-items: center;
+  justify-content: center;
+}
+#drop-overlay.visible {
+  display: flex;
+}
+#drop-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  color: #fff;
+  border: 2px dashed rgba(255,255,255,.5);
+  border-radius: 16px;
+  padding: 48px 64px;
+  pointer-events: none;
+}
+#drop-message svg {
+  width: 52px;
+  height: 52px;
+  color: #7ecfff;
+}
+#drop-message span {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: .3px;
+}
+
+/* ── Error ── */
+#error {
+  color: #c0392b;
+  background: #fdecea;
+  border: 1px solid #e57373;
+  border-radius: 6px;
+  padding: 14px 20px;
+  margin: 30px 24px;
+}
+
+#loading {
+  text-align: center;
+  padding: 60px;
+  font-size: 15px;
+  color: #666;
+}

@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c ':*)",
+      "Bash(python -c ':*)",
+      "Bash(npm install:*)",
+      "Bash(node -e ':*)",
+      "Bash(curl -s http://localhost:3000/api/planning)",
+      "Bash(node -e \"process.stdin.resume\\(\\);let d='';process.stdin.on\\('data',c=>d+=c\\);process.stdin.on\\('end',\\(\\)=>{const j=JSON.parse\\(d\\);console.log\\('title:',j.title,'| employees:',j.employees.length,'| weeks:',j.weekHeaders.join\\(', '\\)\\)}\\)\")",
+      "Bash(curl -s \"http://127.0.0.1:3000/api/planning\")",
+      "Bash(netstat -ano)",
+      "Bash(findstr \":3000\")",
+      "Bash(tasklist /FI \"PID eq 16532\")",
+      "Bash(tasklist)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(taskkill /PID 8576 /F)",
+      "Bash(cmd /c \"taskkill /PID 8576 /F\")",
+      "Bash(mkdir -p \"C:/Learning/Claude/PlanningViewerWPF/Models\" \"C:/Learning/Claude/PlanningViewerWPF/Services\" \"C:/Learning/Claude/PlanningViewerWPF/ViewModels\" \"C:/Learning/Claude/PlanningViewerWPF/Views\")",
+      "Read(//c/Learning/Claude/**)",
+      "Bash(dotnet restore *)",
+      "Bash(dotnet build *)",
+      "Bash(dotnet new *)",
+      "Bash(dotnet sln *)",
+      "Bash(powershell -command \"Get-Content 'C:\\\\Learning\\\\Claude\\\\PlanningViewerWPF\\\\bin\\\\Debug\\\\net8.0-windows\\\\report.xls' -TotalCount 3\")",
+      "Bash(taskkill /F /IM PlanningViewerWPF.exe)",
+      "Bash(ffmpeg -version)",
+      "PowerShell(Get-Command ffmpeg -ErrorAction SilentlyContinue)"
+    ]
+  }
+}

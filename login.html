@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Planning Viewer — Login</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #0f1120;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      background: #1a1a2e;
+      border-radius: 12px;
+      padding: 40px 40px 32px;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 8px 32px rgba(0,0,0,.5);
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .logo h1 { color: #fff; font-size: 20px; font-weight: 700; letter-spacing: .4px; }
+    .logo p  { color: #7ecfff; font-size: 12px; margin-top: 4px; }
+
+    label {
+      display: block;
+      color: #9aa5b4;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      letter-spacing: .4px;
+      text-transform: uppercase;
+    }
+
+    input {
+      width: 100%;
+      background: #0f1120;
+      border: 1px solid #2d3a55;
+      border-radius: 6px;
+      color: #fff;
+      font-size: 14px;
+      padding: 10px 12px;
+      outline: none;
+      transition: border-color .15s;
+    }
+    input:focus { border-color: #4a6cf7; }
+
+    .field { margin-bottom: 18px; }
+
+    /* ── Alert banners ── */
+    .alert {
+      border-radius: 6px;
+      padding: 10px 12px;
+      font-size: 13px;
+      margin-bottom: 18px;
+      display: none;
+    }
+    .alert.visible { display: block; }
+    .alert-error   { background: #3b1a1a; border: 1px solid #7f2d2d; color: #f87171; }
+    .alert-success { background: #0f2a1a; border: 1px solid #1f6b3a; color: #4ade80; }
+
+    /* ── Buttons ── */
+    .btn {
+      width: 100%;
+      border: none;
+      border-radius: 6px;
+      padding: 11px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .15s;
+      margin-top: 4px;
+    }
+    .btn-primary          { background: #4a6cf7; color: #fff; }
+    .btn-primary:hover    { background: #3a5ce6; }
+    .btn-primary:active   { background: #2a4cd5; }
+
+    /* ── Toggle link ── */
+    .toggle-link {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 13px;
+      color: #6b7a99;
+    }
+    .toggle-link a {
+      color: #7ecfff;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .toggle-link a:hover { text-decoration: underline; }
+
+    /* ── Panel switching ── */
+    .panel { display: none; }
+    .panel.active { display: block; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">
+      <h1>Planning Viewer</h1>
+      <p id="subtitle">Sign in to continue</p>
+    </div>
+
+    <!-- ── Login panel ── -->
+    <div id="panel-login" class="panel active">
+      <div id="login-error" class="alert alert-error">Incorrect username or password.</div>
+      <div id="login-success" class="alert alert-success">Account created! You can now sign in.</div>
+
+      <form method="POST" action="/login">
+        <div class="field">
+          <label for="login-username">Username</label>
+          <input type="text" id="login-username" name="username" autocomplete="username" autofocus required>
+        </div>
+        <div class="field">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" name="password" autocomplete="current-password" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Sign in</button>
+      </form>
+
+      <div class="toggle-link">
+        No account yet? <a href="#signup">Create one</a>
+      </div>
+    </div>
+
+    <!-- ── Sign-up panel ── -->
+    <div id="panel-signup" class="panel">
+      <div id="signup-error" class="alert alert-error"></div>
+
+      <form method="POST" action="/signup">
+        <div class="field">
+          <label for="signup-username">Username</label>
+          <input type="text" id="signup-username" name="username" autocomplete="username" required>
+        </div>
+        <div class="field">
+          <label for="signup-password">Password</label>
+          <input type="password" id="signup-password" name="password" autocomplete="new-password" required>
+        </div>
+        <div class="field">
+          <label for="signup-confirm">Confirm password</label>
+          <input type="password" id="signup-confirm" name="confirm" autocomplete="new-password" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Create account</button>
+      </form>
+
+      <div class="toggle-link">
+        Already have an account? <a href="#login">Sign in</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const params   = new URLSearchParams(location.search);
+    const subtitle = document.getElementById('subtitle');
+
+    function showPanel(name) {
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      document.getElementById('panel-' + name).classList.add('active');
+      subtitle.textContent = name === 'login' ? 'Sign in to continue' : 'Create an account';
+      // Focus the first input in the active panel
+      const first = document.getElementById('panel-' + name).querySelector('input');
+      if (first) first.focus();
+    }
+
+    // Drive panel from URL hash
+    function applyHash() {
+      showPanel(location.hash === '#signup' ? 'signup' : 'login');
+    }
+    window.addEventListener('hashchange', applyHash);
+
+    // Login errors
+    if (params.get('error') === '1') {
+      document.getElementById('login-error').classList.add('visible');
+    }
+
+    // Sign-up errors — redirect to signup panel
+    const signupError = params.get('signup_error');
+    if (signupError) {
+      const msgs = {
+        taken:    'That username is already taken.',
+        mismatch: 'Passwords do not match.',
+        empty:    'All fields are required.',
+      };
+      const el = document.getElementById('signup-error');
+      el.textContent = msgs[signupError] || 'Something went wrong, please try again.';
+      el.classList.add('visible');
+      location.hash = '#signup'; // triggers hashchange → showPanel('signup')
+    } else {
+      applyHash(); // apply current hash on load
+    }
+
+    // Success after sign-up
+    if (params.get('registered') === '1') {
+      document.getElementById('login-success').classList.add('visible');
+    }
+  </script>
+</body>
+</html>
