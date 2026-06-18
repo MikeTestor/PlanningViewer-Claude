@@ -15,6 +15,7 @@
     "bcryptjs": "^3.0.3",
     "express": "^5.2.1",
     "express-session": "^1.19.0",
+    "mongodb": "^7.3.0",
     "xlrd-parser": "^0.1.2",
     "xlsx": "^0.18.5"
   }
