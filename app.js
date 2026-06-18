@@ -289,14 +289,13 @@ function scrollToEmployee(name) {
       fetch('/api/planning'),
       fetch('/api/me'),
     ]);
-    if (!planRes.ok) throw new Error(`HTTP ${planRes.status}`);
-    data     = await planRes.json();
     username = meRes.ok ? (await meRes.json()).username : null;
+    if (!planRes.ok) throw new Error(`HTTP ${planRes.status}`);
+    data = await planRes.json();
     if (data.error) throw new Error(data.error);
   } catch (err) {
-    document.getElementById('app').innerHTML =
-      `<div id="error"><strong>Failed to load planning data.</strong><br>${err.message}<br><br>
-       Make sure the server is running: <code>node server.js</code></div>`;
+    document.getElementById('app').innerHTML = '';
+    document.getElementById('drop-overlay').classList.add('visible');
     initDragDrop(username);
     return;
   }
